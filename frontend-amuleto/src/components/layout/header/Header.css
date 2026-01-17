@@ -1,0 +1,280 @@
+:root {
+    --header-bg: #dcc8b3;
+    /* Beige/Tan color from image */
+    --header-text: #333333;
+    --nav-active-bg: #f5f0eb;
+    --search-bg: #f5f0eb;
+    /* Lighter beige for inputs/active states */
+    --logo-color: #8b7355;
+}
+
+.header {
+    width: 100%;
+    background-color: var(--header-bg);
+    padding: 0.5rem 2rem;
+    box-sizing: border-box;
+    font-family: 'Avenir', 'Helvetica Neue', sans-serif;
+    /* Clean sans-serif font */
+    color: var(--header-text);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 80px;
+}
+
+/* Logo Styles */
+.logo-section {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Navigation Styles */
+.header-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    margin-left: auto;
+    /* Push to center/right if needed, but flex justify-between handles main spacing */
+    padding: 0 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #4a4a4a;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+
+.nav-link.active {
+    background-color: var(--nav-active-bg);
+    color: #333;
+    font-weight: 600;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Right Section Styles */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+/* Search Bar */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-input {
+    background-color: var(--search-bg);
+    border: none;
+    border-radius: 20px;
+    /* Highly rounded as in image */
+    padding: 0.6rem 2.5rem 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    width: 200px;
+    outline: none;
+    color: #555;
+    transition: width 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #888;
+}
+
+.search-input:focus {
+    width: 240px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    color: #555;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Action Icons */
+.action-icons {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    text-decoration: none;
+    /* For Link elements */
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+    color: #000;
+}
+
+/* Menu Toggle (Mobile) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--header-text);
+    cursor: pointer;
+    padding: 0;
+    margin-right: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .header {
+        padding: 0.5rem 1rem;
+    }
+
+    .header-nav {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 0.5rem 0.75rem;
+    }
+
+    .search-input {
+        width: 160px;
+    }
+
+    .search-input:focus {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: block;
+        order: -1;
+        /* Place before logo */
+    }
+
+    /* Mobile Navigation Drawer */
+    .header-nav {
+        display: none;
+        /* Hidden by default */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--header-bg);
+        flex-direction: column;
+        padding: 1rem;
+        gap: 0.5rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        z-index: 50;
+    }
+
+    .header-nav.active {
+        display: flex;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .nav-link {
+        width: 100%;
+        text-align: center;
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Adjust Logo position */
+    .logo-section {
+        margin-right: auto;
+    }
+
+    /* Search Bar adjustments */
+    .search-container {
+        display: flex;
+        margin-right: 0.5rem;
+    }
+
+    .search-input {
+        width: 120px;
+        padding: 0.6rem 2.5rem 0.6rem 1.2rem;
+        background-color: var(--search-bg);
+    }
+
+    .search-input:focus {
+        width: 160px;
+    }
+
+    .action-icons {
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-input {
+        display: none;
+        /* Hide text input on very small screens, rely on icon or a separate search page if needed. 
+                          For this 'hacer responsive' request, let's keep it simpler. */
+    }
+
+    .search-container .search-icon {
+        position: relative;
+        right: auto;
+        pointer-events: auto;
+        /* Make it clickable if we were implementing logic */
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
