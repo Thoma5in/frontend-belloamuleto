@@ -1,0 +1,23 @@
+.productos-home {
+    padding: 2rem;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.productos-home h1 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
