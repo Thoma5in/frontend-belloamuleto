@@ -3,10 +3,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, ShoppingCart, User, Heart, Menu, X } from 'lucide-react';
 import './Header.css';
-import logo from '../../../assets/icons/icono-bello-amuleto.svg';
+import { useNavigate } from 'react-router-dom';
+import logo from '../../../assets/icons/icono-bello-amuleto.png';
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -47,7 +49,7 @@ const Header = () => {
                     </div>
 
                     <div className="action-icons">
-                        <button className="icon-btn" aria-label="Account">
+                        <button className="icon-btn" aria-label="Account" onClick={() => navigate('/register')}>
                             <User size={24} />
                         </button>
                         <Link to="/cart" className="icon-btn" aria-label="Cart">
