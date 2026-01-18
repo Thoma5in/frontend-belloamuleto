@@ -27,6 +27,11 @@
     gap: 2rem;
 }
 
+.footer-logo-wrapper {
+    display: flex;
+    justify-content: flex-start;
+}
+
 /* Logo Styles */
 .logo-placeholder {
     width: auto;
@@ -39,10 +44,7 @@
     height: 80px;
     width: auto;
     object-fit: contain;
-    /* Invert color filters can be tricky, assuming the SVG is appropriately colored or we use filter if needed for dark mode. 
-       Since it's likely a black icon on dark background, we might need to invert calls if it's black. 
-       If the SVG is black and the footer is dark (#1a1a1a), we need to make it white. */
-    filter: invert(1) brightness(2);
+    filter: none;
     transition: transform 0.3s ease;
 }
 
