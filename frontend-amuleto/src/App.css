@@ -11,4 +11,7 @@
   flex-direction: column;
 }
 
-/* Keep other utility classes if needed, or clear them */
+.main-content {
+  flex: 1;
+  width: 100%;
+}

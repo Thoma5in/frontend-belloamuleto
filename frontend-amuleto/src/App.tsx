@@ -14,7 +14,7 @@ function App() {
       <Header />
 
 
-      <main style={{ padding: '2rem', textAlign: 'center', minHeight: '80vh' }}>
+      <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/productos" element={<ProductosHome />} />
