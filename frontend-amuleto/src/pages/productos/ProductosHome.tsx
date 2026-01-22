@@ -1,6 +1,6 @@
-import React from 'react';
 import './ProductosHome.css';
 import { Heart, ShoppingCart, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const ProductosHome = () => {
     // Mock data for products
@@ -9,6 +9,8 @@ const ProductosHome = () => {
         name: 'Dual Hongo',
         price: '$ 50.000',
     });
+
+    const navigate = useNavigate();
 
     return (
         <div className="productos-page">
@@ -43,7 +45,7 @@ const ProductosHome = () => {
 
                 <div className="products-grid">
                     {products.map((_, index) => (
-                        <div key={index} className="product-card">
+                        <div key={index} onClick={() => navigate(`/producto-detalle/${index}`)} className="product-card">
                             <div className="product-image-container">
                                 <div className="product-image-placeholder">
                                     {/* No image placed as requested */}
