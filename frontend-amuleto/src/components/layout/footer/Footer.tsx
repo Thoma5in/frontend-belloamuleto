@@ -1,6 +1,6 @@
 import './Footer.css';
 import { Instagram, Youtube } from 'lucide-react';
-import logo from '../../../assets/icons/icono-bello-amuleto.svg';
+import logo from '../../../assets/icons/icono-bello-amuleto.png';
 
 const Footer = () => {
     return (
@@ -8,7 +8,7 @@ const Footer = () => {
             <div className="footer-content">
                 {/* Logo and Socials Column */}
                 <div className="footer-column brand-column">
-                    <div className="footer-logo">
+                    <div className="footer-logo-wrapper">
                         {/* Placeholder for the logo shown in the image */}
                         <div className="logo-placeholder">
                             <img src={logo} alt="Logo" className="footer-logo" />
