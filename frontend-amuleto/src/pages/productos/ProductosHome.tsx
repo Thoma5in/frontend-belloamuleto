@@ -1,16 +1,47 @@
 import './ProductosHome.css';
 import { Heart, ShoppingCart, ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getProducts, type Product } from '../../services/products';
 
 const ProductosHome = () => {
-    // Mock data for products
-    const products = Array(15).fill({
-        id: 1,
-        name: 'Dual Hongo',
-        price: '$ 50.000',
-    });
-
     const navigate = useNavigate();
+    const [products, setProducts] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [page, ] = useState(1);
+
+    const limit = 12;
+
+    const paginationLabel = useMemo(() => {
+        if (!products.length) return '';
+        return `Página ${page}`;
+    }, [page, products.length]);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        setIsLoading(true);
+        setError(null);
+
+        getProducts({ page, limit, sortBy: 'id', sortOrder: 'desc' })
+            .then((response) => {
+                if (!isMounted) return;
+                setProducts(response.data ?? []);
+            })
+            .catch((err: Error) => {
+                if (!isMounted) return;
+                setError(err.message || 'No se pudieron cargar los productos');
+            })
+            .finally(() => {
+                if (!isMounted) return;
+                setIsLoading(false);
+            });
+
+        return () => {
+            isMounted = false;
+        };
+    }, [page]);
 
     return (
         <div className="productos-page">
@@ -43,9 +74,16 @@ const ProductosHome = () => {
                     </div>
                 </div>
 
+                {isLoading && <div className="products-empty">Cargando productos...</div>}
+                {!isLoading && error && <div className="products-empty">{error}</div>}
+                {!isLoading && !error && products.length === 0 && (
+                    <div className="products-empty">No hay productos disponibles.</div>
+                )}
+
+                {!isLoading && !error && products.length > 0 && (
                 <div className="products-grid">
-                    {products.map((_, index) => (
-                        <div key={index} onClick={() => navigate(`/producto-detalle/${index}`)} className="product-card">
+                    {products.map((product) => (
+                        <div key={product.id} onClick={() => navigate(`/producto-detalle/${product.id}`)} className="product-card">
                             <div className="product-image-container">
                                 <div className="product-image-placeholder">
                                     {/* No image placed as requested */}
@@ -56,8 +94,8 @@ const ProductosHome = () => {
                             </div>
                             <div className="product-info">
                                 <div className="product-details">
-                                    <h3 className="product-name">Dual Hongo</h3>
-                                    <p className="product-price">$ 50.000</p>
+                                    <h3 className="product-name">{product.nombre}</h3>
+                                    <p className="product-price">{product.formattedPrice ?? `$ ${product.precio}`}</p>
                                 </div>
                                 <button className="add-to-cart-btn">
                                     <ShoppingCart size={20} />
@@ -66,8 +104,9 @@ const ProductosHome = () => {
                         </div>
                     ))}
                 </div>
+                )}
 
-                <div className="pagination">
+                <div className="pagination" aria-label={paginationLabel}>
                     <button className="pagination-btn arrow">
                         <ChevronLeft size={18} /> Anterior
                     </button>
