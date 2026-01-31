@@ -1,7 +1,9 @@
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ChevronDown, Heart } from 'lucide-react';
+import { useParams } from 'react-router-dom';
 import './ProductDetail.css';
+import { getProductById, type Product } from '../../services/products';
 
 type RelatedProduct = {
   id: string;
@@ -10,6 +12,7 @@ type RelatedProduct = {
 };
 
 const ProductDetail = () => {
+  const { id } = useParams();
   const thumbnails = useMemo(() => ['t1', 't2', 't3', 't4'], []);
   const related = useMemo<RelatedProduct[]>(
     () => [
@@ -24,14 +27,51 @@ const ProductDetail = () => {
   const [activeThumb, setActiveThumb] = useState(thumbnails[0]);
   const [qty, setQty] = useState(1);
   const [openPanel, setOpenPanel] = useState<'materials' | 'care' | null>('materials');
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const decQty = () => setQty((q) => Math.max(1, q - 1));
   const incQty = () => setQty((q) => Math.min(99, q + 1));
 
+  useEffect(() => {
+    if (!id) {
+      setError('Producto no encontrado');
+      setIsLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+    setIsLoading(true);
+    setError(null);
+
+    getProductById(id)
+      .then((response) => {
+        if (!isMounted) return;
+        setProduct(response.data ?? null);
+      })
+      .catch((err: Error) => {
+        if (!isMounted) return;
+        setError(err.message || 'No se pudo cargar el producto');
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setIsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [id]);
+
+  const productName = product?.nombre ?? '';
+  const productPrice = product?.formattedPrice ?? (product ? `$ ${product.precio}` : '');
+  const productDescription = product?.descripcion ?? 'Sin descripción disponible.';
+
   return (
     <div className="pd-page">
       <div className="pd-container">
-        <div className="pd-breadcrumb">INICIO / JOYERÍA / DUAL HONGO</div>
+        <div className="pd-breadcrumb">INICIO / PRODUCTOS / {productName || 'Detalle'}</div>
 
         <section className="pd-hero">
           <div className="pd-gallery">
@@ -59,14 +99,17 @@ const ProductDetail = () => {
           </div>
 
           <aside className="pd-info">
-            <div className="pd-collection">COLECCIÓN ARTESANAL</div>
-            <h1 className="pd-title">Dual Hongo</h1>
-            <div className="pd-price">$ 50.000 COP</div>
-            <p className="pd-desc">
-              Un collar artesanal o doble vuelta, diseñado con cuentas de cristal premium en tonos rubí y un dije
-              cerámico de hongo detallado a mano. Una pieza lúdica pero sofisticada que celebra la naturaleza y la
-              artesanía tradicional.
-            </p>
+            {isLoading && <div className="pd-loading">Cargando producto...</div>}
+            {!isLoading && error && <div className="pd-error">{error}</div>}
+            {!isLoading && !error && !product && (
+              <div className="pd-error">Producto no encontrado.</div>
+            )}
+            {!isLoading && !error && product && (
+            <>
+              <div className="pd-collection">COLECCIÓN ARTESANAL</div>
+              <h1 className="pd-title">{productName}</h1>
+              <div className="pd-price">{productPrice} COP</div>
+              <p className="pd-desc">{productDescription}</p>
 
             <div className="pd-qty">
               <div className="pd-qty-label">CANTIDAD</div>
@@ -132,6 +175,8 @@ const ProductDetail = () => {
                 </div>
               </div>
             </div>
+            </>
+            )}
           </aside>
         </section>
 
