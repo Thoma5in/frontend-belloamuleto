@@ -1,5 +1,350 @@
+/* General Layout */
 .cart-page {
+    padding: 2rem 5%;
+    background-color: #F4EFEB;
+    /* Light beige background */
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+.page-title {
+    font-family: 'Playfair Display', serif;
+    /* Assuming a serif font is available/wanted */
+    font-size: 3rem;
+    color: #1A1A1A;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+/* Info Banner */
+.info-banner {
+    background-color: #929292;
+    /* Grayish */
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+}
+
+.info-icon {
+    flex-shrink: 0;
+}
+
+/* Main Layout Grid */
+.cart-layout {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .cart-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Left Column: Cart Items */
+.cart-items-section {
+    background: white;
+    border-radius: 16px;
     padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.item-count {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: #f9f9f9;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-details {
+    flex-grow: 1;
+    padding: 0 1.5rem;
+}
+
+.price-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.current-price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.current-price {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.discount-badge {
+    color: #8DDAC6;
+    /* Light teal/cyan color from image */
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.qty-btn:hover {
+    color: #000;
+}
+
+.qty-value {
+    border: 1px solid #ddd;
+    padding: 0.2rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* Right Column: Sidebar */
+.checkout-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.summary-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* Discount Section */
+.discount-input-wrapper {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.discount-input-wrapper input {
+    border: none;
+    flex-grow: 1;
+    outline: none;
+    font-size: 0.9rem;
+    padding: 5px 0;
+    color: #333;
+}
+
+.remove-code {
+    background: none;
+    border: none;
+    color: #E74C3C;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.coupon-status {
+    display: block;
+    color: #E6B448;
+    /* Orange-ish */
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    color: #555;
+}
+
+.free-text {
+    color: #2ECC71;
+    font-weight: 600;
+}
+
+.total-row {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    color: #000;
+    font-size: 1rem;
+}
+
+.confirm-btn {
+    width: 100%;
+    background: linear-gradient(90deg, #F0C27B 0%, #D4A056 100%);
+    /* Orange/Gold Gradient */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(212, 160, 86, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.confirm-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(212, 160, 86, 0.4);
+}
+
+/* Payment Section */
+.payment-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.paypal-logo {
+    display: flex;
+    font-family: sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    gap: 1px;
+}
+
+.p-blue {
+    color: #003087;
+}
+
+.p-light {
+    color: #009cde;
+}
+
+/* Address Section */
+.no-address-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+}
+
+.map-icon {
+    color: #FF9F1C;
+    margin-bottom: 0.5rem;
+}
+
+.no-address-title {
+    font-weight: 700;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.no-address-subtitle {
+    color: #888;
+    font-size: 0.8rem;
+    margin: 0;
+    margin-bottom: 1rem;
+    max-width: 200px;
+}
+
+.add-address-btn {
+    background: #FF9F1C;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.add-address-btn:hover {
+    background: #e68e19;
     min-height: 60vh;
     background-color: #F5EDE8;
     font-family: 'Playfair Display', serif;
