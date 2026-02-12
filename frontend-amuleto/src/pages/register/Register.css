@@ -109,6 +109,18 @@
 	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
 }
 
+.register-input-error {
+	border-color: rgba(176, 40, 40, 0.65);
+	box-shadow: 0 0 0 2px rgba(176, 40, 40, 0.10);
+}
+
+.register-error {
+	margin: 2px 0 0;
+	font-size: 12px;
+	line-height: 1.2;
+	color: rgba(176, 40, 40, 0.95);
+}
+
 .register-terms {
 	display: flex;
 	align-items: center;
@@ -144,6 +156,14 @@
 
 .register-submit:active {
 	transform: translateY(1px);
+}
+
+.login-link {
+	cursor: pointer;
+}
+
+.login-link:hover {
+	text-decoration: underline;
 }
 
 @media (max-width: 480px) {

@@ -49,7 +49,7 @@ const Header = () => {
                     </div>
 
                     <div className="action-icons">
-                        <button className="icon-btn" aria-label="Account" onClick={() => navigate('/register')}>
+                        <button className="icon-btn" aria-label="Account" onClick={() => navigate('/login')}>
                             <User size={24} />
                         </button>
                         <Link to="/cart" className="icon-btn" aria-label="Cart">
