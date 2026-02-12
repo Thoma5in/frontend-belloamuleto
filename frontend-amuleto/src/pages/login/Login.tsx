@@ -2,17 +2,21 @@ import { useState } from 'react';
 import './Login.css';
 import brandIcon from '../../assets/icons/icono-bello-amuleto.png';
 import { useNavigate } from 'react-router-dom';
+import { validateLoginForm } from '../../validations/auth/loginValidation';
+import type { LoginFormErrors, LoginFormValues } from '../../validations/auth/loginValidation';
 
 const Login = () => {
 	const navigate = useNavigate();
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [values, setValues] = useState<LoginFormValues>({ email: '', password: '' });
+	const [errors, setErrors] = useState<LoginFormErrors>({});
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
+		const nextErrors = validateLoginForm(values);
+		setErrors(nextErrors);
+		if (Object.keys(nextErrors).length > 0) return;
 		// UI-only screen (no backend yet)
-		void email;
-		void password;
+		void values;
 	};
 
 	return (
@@ -33,26 +37,34 @@ const Login = () => {
 								<label className="login-label" htmlFor="login-email">Correo</label>
 								<input
 									id="login-email"
-									className="login-input"
+									className={`login-input${errors.email ? ' login-input-error' : ''}`}
 									type="email"
 									placeholder="Correo electrónico"
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
+									value={values.email}
+									onChange={(e) => {
+										setValues((prev) => ({ ...prev, email: e.target.value }));
+										if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+									}}
 									autoComplete="email"
 								/>
+								{errors.email ? <p className="login-error">{errors.email}</p> : null}
 							</div>
 
 							<div className="login-field">
 								<label className="login-label" htmlFor="login-password">Contraseña</label>
 								<input
 									id="login-password"
-									className="login-input"
+									className={`login-input${errors.password ? ' login-input-error' : ''}`}
 									type="password"
 									placeholder="Contraseña"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-									autoComplete="new-password"
+									value={values.password}
+									onChange={(e) => {
+										setValues((prev) => ({ ...prev, password: e.target.value }));
+										if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
+									}}
+									autoComplete="current-password"
 								/>
+								{errors.password ? <p className="login-error">{errors.password}</p> : null}
 							</div>
 
 							<button className="login-submit" type="submit">Iniciar Sesión</button>

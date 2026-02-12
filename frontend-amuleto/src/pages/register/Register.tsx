@@ -2,8 +2,8 @@ import { useState } from 'react';
 import './Register.css';
 import brandIcon from '../../assets/icons/icono-bello-amuleto.png';
 import { useNavigate } from 'react-router-dom';
-import { validateRegisterForm } from './registerValidation';
-import type { RegisterFormErrors, RegisterFormValues } from './registerValidation';
+import { validateRegisterForm } from '../../validations/auth/registerValidation';
+import type { RegisterFormErrors, RegisterFormValues } from '../../validations/auth/registerValidation';
 
 const Register = () => {
 	const [values, setValues] = useState<RegisterFormValues>({
