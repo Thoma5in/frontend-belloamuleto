@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import './Register.css';
 import brandIcon from '../../assets/icons/icono-bello-amuleto.png';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [acceptedTerms, setAcceptedTerms] = useState(false);
+	const navigate = useNavigate();
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -66,6 +68,8 @@ const Register = () => {
 							</label>
 
 							<button className="register-submit" type="submit">Registrar</button>
+
+							<p>Ya tienes cuenta? <strong className="login-link" onClick={() => navigate('/login')}>Inicia sesión</strong></p>
 						</form>
 					</div>
 				</section>

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import './Login.css';
 import brandIcon from '../../assets/icons/icono-bello-amuleto.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [acceptedTerms, setAcceptedTerms] = useState(false);
 
 	const onSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		// UI-only screen (no backend yet)
 		void email;
 		void password;
-		void acceptedTerms;
 	};
 
 	return (
@@ -55,17 +55,8 @@ const Login = () => {
 								/>
 							</div>
 
-							<label className="login-terms">
-								<input
-									className="login-checkbox"
-									type="checkbox"
-									checked={acceptedTerms}
-									onChange={(e) => setAcceptedTerms(e.target.checked)}
-								/>
-								<span>Aceptar los Terminos y Condiciones</span>
-							</label>
-
 							<button className="login-submit" type="submit">Iniciar Sesión</button>
+							<p>¿No tienes cuenta? <strong className="register-link" onClick={() => navigate('/register')}>Registrate</strong></p>
 						</form>
 					</div>
 				</section>
