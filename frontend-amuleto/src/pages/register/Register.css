@@ -121,6 +121,13 @@
 	color: rgba(176, 40, 40, 0.95);
 }
 
+.register-submit-error {
+	margin: 4px 0 0;
+	font-size: 12px;
+	line-height: 1.2;
+	color: rgba(176, 40, 40, 0.95);
+}
+
 .register-terms {
 	display: flex;
 	align-items: center;
@@ -148,6 +155,11 @@
 	font-weight: 600;
 	cursor: pointer;
 	transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.register-submit:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
 }
 
 .register-submit:hover {

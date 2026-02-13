@@ -4,25 +4,50 @@ import brandIcon from '../../assets/icons/icono-bello-amuleto.png';
 import { useNavigate } from 'react-router-dom';
 import { validateRegisterForm } from '../../validations/auth/registerValidation';
 import type { RegisterFormErrors, RegisterFormValues } from '../../validations/auth/registerValidation';
+import { register } from '../../services/auth';
 
 const Register = () => {
 	const [values, setValues] = useState<RegisterFormValues>({
 		name: '',
 		email: '',
+		telefono: '',
+		direccion: '',
 		password: '',
 		confirmPassword: '',
 		acceptedTerms: false,
 	});
 	const [errors, setErrors] = useState<RegisterFormErrors>({});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [submitError, setSubmitError] = useState<string | null>(null);
 	const navigate = useNavigate();
 
-	const onSubmit = (e: React.FormEvent) => {
+	const onSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		setSubmitError(null);
 		const nextErrors = validateRegisterForm(values);
 		setErrors(nextErrors);
 		if (Object.keys(nextErrors).length > 0) return;
-		// UI-only screen (no backend yet)
-		void values;
+
+		const payload = {
+			nombre: values.name.trim(),
+			email: values.email.trim(),
+			password: values.password,
+			...(values.telefono?.trim() ? { telefono: values.telefono.trim() } : {}),
+			...(values.direccion?.trim() ? { direccion: values.direccion.trim() } : {}),
+		};
+
+		console.debug('[register] payload', payload);
+
+		try {
+			setIsSubmitting(true);
+			await register(payload);
+			navigate('/login');
+		} catch (err) {
+			const message = err instanceof Error ? err.message : 'Error al registrar';
+			setSubmitError(message);
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -50,6 +75,7 @@ const Register = () => {
 									onChange={(e) => {
 										setValues((prev) => ({ ...prev, name: e.target.value }));
 										if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+										if (submitError) setSubmitError(null);
 									}}
 									autoComplete="name"
 								/>
@@ -67,10 +93,47 @@ const Register = () => {
 									onChange={(e) => {
 										setValues((prev) => ({ ...prev, email: e.target.value }));
 										if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+										if (submitError) setSubmitError(null);
 									}}
 									autoComplete="email"
 								/>
 								{errors.email ? <p className="register-error">{errors.email}</p> : null}
+							</div>
+
+							<div className="register-field">
+								<label className="register-label" htmlFor="register-phone">Teléfono (opcional)</label>
+								<input
+									id="register-phone"
+									className={`register-input${errors.telefono ? ' register-input-error' : ''}`}
+									type="tel"
+									placeholder="Teléfono"
+									value={values.telefono ?? ''}
+									onChange={(e) => {
+										setValues((prev) => ({ ...prev, telefono: e.target.value }));
+										if (errors.telefono) setErrors((prev) => ({ ...prev, telefono: undefined }));
+										if (submitError) setSubmitError(null);
+									}}
+									autoComplete="tel"
+								/>
+								{errors.telefono ? <p className="register-error">{errors.telefono}</p> : null}
+							</div>
+
+							<div className="register-field">
+								<label className="register-label" htmlFor="register-address">Dirección (opcional)</label>
+								<input
+									id="register-address"
+									className={`register-input${errors.direccion ? ' register-input-error' : ''}`}
+									type="text"
+									placeholder="Dirección"
+									value={values.direccion ?? ''}
+									onChange={(e) => {
+										setValues((prev) => ({ ...prev, direccion: e.target.value }));
+										if (errors.direccion) setErrors((prev) => ({ ...prev, direccion: undefined }));
+										if (submitError) setSubmitError(null);
+									}}
+									autoComplete="street-address"
+								/>
+								{errors.direccion ? <p className="register-error">{errors.direccion}</p> : null}
 							</div>
 
 							<div className="register-field">
@@ -90,6 +153,7 @@ const Register = () => {
 												confirmPassword: undefined,
 											}));
 										}
+										if (submitError) setSubmitError(null);
 									}}
 									autoComplete="new-password"
 								/>
@@ -109,6 +173,7 @@ const Register = () => {
 										if (errors.confirmPassword) {
 											setErrors((prev) => ({ ...prev, confirmPassword: undefined }));
 										}
+										if (submitError) setSubmitError(null);
 									}}
 									autoComplete="new-password"
 								/>
@@ -125,6 +190,7 @@ const Register = () => {
 									onChange={(e) => {
 										setValues((prev) => ({ ...prev, acceptedTerms: e.target.checked }));
 										if (errors.acceptedTerms) setErrors((prev) => ({ ...prev, acceptedTerms: undefined }));
+										if (submitError) setSubmitError(null);
 									}}
 								/>
 								<span>Aceptar los Terminos y Condiciones</span>
@@ -133,7 +199,11 @@ const Register = () => {
 								<p className="register-error">{errors.acceptedTerms}</p>
 							) : null}
 
-							<button className="register-submit" type="submit">Registrar</button>
+							{submitError ? <p className="register-submit-error">{submitError}</p> : null}
+
+							<button className="register-submit" type="submit" disabled={isSubmitting}>
+								{isSubmitting ? 'Registrando...' : 'Registrar'}
+							</button>
 
 							<p>Ya tienes cuenta? <strong className="login-link" onClick={() => navigate('/login')}>Inicia sesión</strong></p>
 						</form>

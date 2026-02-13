@@ -19,14 +19,25 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   });
 
   if (!response.ok) {
-    let message = response.statusText;
+    let message = response.statusText || 'Error en la solicitud';
     try {
-      const body = await response.json();
-      message = body?.message || body?.error || message;
+      const contentType = response.headers.get('content-type') ?? '';
+      if (contentType.includes('application/json')) {
+        const body = await response.json();
+        message =
+          body?.message ||
+          body?.error ||
+          body?.errors?.[0]?.message ||
+          (typeof body === 'string' ? body : JSON.stringify(body)) ||
+          message;
+      } else {
+        const text = await response.text();
+        if (text) message = text;
+      }
     } catch {
-      // ignore JSON parsing errors
+      // ignore body parsing errors
     }
-    throw new Error(message || 'Error en la solicitud');
+    throw new Error(`${response.status} ${message}`.trim());
   }
 
   return response.json() as Promise<T>;
