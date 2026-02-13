@@ -1,6 +1,8 @@
 export type RegisterFormValues = {
 	name: string;
 	email: string;
+	telefono?: string;
+	direccion?: string;
 	password: string;
 	confirmPassword: string;
 	acceptedTerms: boolean;
@@ -33,6 +35,19 @@ export const validateRegisterForm = (values: RegisterFormValues): RegisterFormEr
 		errors.password = 'La contraseña es obligatoria';
 	} else if (values.password.length < 6) {
 		errors.password = 'La contraseña debe tener al menos 6 caracteres';
+	}
+
+	if (values.telefono && values.telefono.trim()) {
+		const digits = values.telefono.replace(/\D/g, '');
+		if (digits.length < 7) {
+			errors.telefono = 'Ingresa un teléfono válido';
+		}
+	}
+
+	if (values.direccion && values.direccion.trim()) {
+		if (values.direccion.trim().length < 5) {
+			errors.direccion = 'Ingresa una dirección válida';
+		}
 	}
 
 	if (!values.confirmPassword) {
